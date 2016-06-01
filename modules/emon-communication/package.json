@@ -1,0 +1,15 @@
+{
+  "name": "emon-communication",
+  "version": "1.0.0",
+  "description": "Energy monitoring device communication",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Felipe Nipo <fpnipo@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "node-ipc": "^7.0.0",
+    "serialport": "^3.1.2"
+  }
+}

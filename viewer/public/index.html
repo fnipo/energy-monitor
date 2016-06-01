@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="EnergyMonitor">
+    <head>
+        <meta charset="utf-8">
+        <title>Energy Monitor</title>
+        <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+        
+        <!-- JS -->
+        <!-- Libs -->
+        <script src="node_modules\angular\angular.min.js"></script>
+		<script src="node_modules\angular-route\angular-route.min.js"></script>
+		<script src="node_modules\jquery\dist\jquery.min.js"></script>
+		<script src="node_modules\bootstrap\dist\js\bootstrap.min.js"></script>
+        <!-- Main files -->
+		<script src="app.js"></script>
+		<script src="routes.js"></script>
+        <!-- Controllers -->
+		<script src="Monitor\MonitorController.js"></script>
+        <!-- Others -->
+        <script type="text/javascript">
+            
+        </script>
+        
+        <!-- CSS -->
+        <!-- Libs -->
+        <link rel="stylesheet" type="text/css" href="node_modules\bootstrap\dist\css\bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="node_modules\bootstrap\dist\css\bootstrap-theme.min.css">
+    </head>
+    <body>
+        <nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<span class="navbar-brand" href="#">Dashboard</span>
+				</div>
+			</div>
+		</nav>
+        
+        <div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span12">
+					<div ng-view>
+						<!-- Content -->
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/javascript">
+			window.focus();
+			var modules = load('../app.js');
+			
+			function load(name) {
+				return require(name);
+			}
+	    </script>
+    </body>
+</html>
