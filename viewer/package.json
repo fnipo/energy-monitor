@@ -1,0 +1,20 @@
+{
+    "name": "energy-monitor",
+    "version": "1.0.0",
+    "description": "Standalone client application for a smart energy monitoring system",
+    "main": "public/index.html",
+    "window": {
+        // "toolbar": false,
+        "toolbar": true,
+        "resizable": false,
+        "width": 1000,
+        "height": 600,
+        "min_width": 600,
+        "min_height": 400,
+        "max_width": 1000,
+        "max_height": 600,
+        "position": "center"
+    },
+    "author": "Felipe Nipo <fpnipo@gmail.com>",
+    "license": "MIT"
+}
