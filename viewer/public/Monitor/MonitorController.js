@@ -12,7 +12,7 @@ app.controller('MonitorController', function ($scope) {
 	ipc.config.silent = true;
     
     ipc.serve(function () {
-		modules.loadSerial();
+		//modules.loadSerial();
         
 		// $('#viewer').removeClass('hideLoad');
 		// $('#bigLoading').addClass('hideLoad');
