@@ -11,12 +11,7 @@ app.controller('MonitorController', function ($scope) {
 	ipc.config.retry = 1500;
 	ipc.config.silent = true;
     
-    ipc.serve(function () {
-		//modules.loadSerial();
-        
-		// $('#viewer').removeClass('hideLoad');
-		// $('#bigLoading').addClass('hideLoad');
-
+    ipc.serve(function () {        
 		ipc.server.on('emonserial:data', function (data, socket) {
             $scope.data = data;
             
