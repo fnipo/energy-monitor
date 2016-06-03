@@ -11,5 +11,6 @@
   "dependencies": {
     "node-ipc": "^7.0.0",
     "serialport": "^3.1.2"
-  }
+  },
+  "devDependencies": {}
 }

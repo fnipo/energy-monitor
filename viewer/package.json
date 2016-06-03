@@ -18,6 +18,10 @@
   "license": "MIT",
   "dependencies": {
     "node-ipc": "^7.0.0",
-    "nw": "^0.12.3"
+    "nw": "^0.15.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   }
 }

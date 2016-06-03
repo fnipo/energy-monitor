@@ -7,21 +7,20 @@
         
         <!-- JS -->
         <!-- Libs -->
+		<script src="node_modules\jquery\dist\jquery.min.js"></script>
         <script src="node_modules\angular\angular.min.js"></script>
 		<script src="node_modules\angular-route\angular-route.min.js"></script>
-		<script src="node_modules\jquery\dist\jquery.min.js"></script>
 		<script src="node_modules\bootstrap\dist\js\bootstrap.min.js"></script>
-		<script src="node_modules\chart.js\dist\Chart.js"></script>
+		<script src="node_modules\chart.js\dist\Chart.min.js"></script>
+		<script src="node_modules\chart.js\dist\Chart.bundle.min.js"></script>
 
         <!-- Main files -->
 		<script src="app.js"></script>
 		<script src="routes.js"></script>
         <!-- Controllers -->
 		<script src="Monitor\MonitorController.js"></script>
-        <!-- Others -->
-        <script type="text/javascript">
-            
-        </script>
+		<!-- Directives -->
+		<script src="Monitor\EmonChartDirective.js"></script>
         
         <!-- CSS -->
         <!-- Libs -->
@@ -32,7 +31,7 @@
         <nav class="navbar navbar-default">
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<span class="navbar-brand" href="#">Dashboard</span>
+					<span class="navbar-brand" href="#">Energy Monitor</span>
 				</div>
 			</div>
 		</nav>
