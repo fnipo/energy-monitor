@@ -1,34 +1,15 @@
 var app = angular.module('EnergyMonitor.Monitor');
 app.controller('MonitorController', function ($scope) {
-        
-    $scope.test = 'Monitor!! :)';
-    $scope.data = 'null';
-    $scope.chartData = [12, 19, 3, 5, 2, 3, 5, 20, 30, 1, 10];
 	
-	$scope.emonChart = {};
-	$scope.emonChart.canvasConfig = {
-		width: 400,
-		height: 400
-	};
-	$scope.emonChart.chartConfig = {
+	var labelsArray = [];
+	
+	$scope.emonChart = {
 		type: 'line',
 		data: {
-			labels: [
-				"0ms", 
-				"0.1s", 
-				"0.2s", 
-				"0.3s", 
-				"0.4s", 
-				"0.5s",
-				"0.6s",
-				"0.7s",
-				"0.8s",
-				"0.9s",
-				"1s"
-			],
+			labels: labelsArray,
 			datasets: [{
-				label: 'Current',
-				data: [12, 19, 3, 5, 2, 3, 5, 20, 30, 1, 10],
+				label: 'Current (mA)',
+				data: [],
 				backgroundColor: [
 					'rgba(255, 99, 132, 0.2)',
 					'rgba(54, 162, 235, 0.2)',
@@ -45,17 +26,41 @@ app.controller('MonitorController', function ($scope) {
 					'rgba(153, 102, 255, 1)',
 					'rgba(255, 159, 64, 1)'
 				],
-				borderWidth: 1
+				borderWidth: 3,
+				fill: false,
+				lineTension: 0,
+				pointRadius: 0
 			}]
 		},
 		options: {
 			scales: {
 				yAxes: [{
 					ticks: {
-						beginAtZero:true
+						beginAtZero: true,
+						suggestedMax: 200
+					}
+				}],
+				xAxes: [{
+					gridLines: {
+						display: false
+					},
+					ticks: {
+						display: false,
 					}
 				}]
 			}
+		},
+		
+		chartObject: {},
+		updateDataBuffer: function(value) {
+			var dataBuffer = $scope.emonChart.data.datasets[0].data; 
+			if (dataBuffer.length >= 500) {
+				dataBuffer.shift();
+			} else {
+				labelsArray.push('');
+			}
+			dataBuffer.push(value);
+			$scope.emonChart.chartObject.update();
 		}
 	};
 	
@@ -66,7 +71,7 @@ app.controller('MonitorController', function ($scope) {
 	ipc.config.silent = true;
     ipc.serve(function () {        
 		ipc.server.on('emonserial:data', function (data, socket) {
-            $scope.data = data.current;
+			$scope.emonChart.updateDataBuffer(data.current);
             $scope.$apply();
 		});
 	});
