@@ -6,137 +6,47 @@ app.controller('MonitorController', function ($scope) {
 	
 	var labelsArray = [];
 	
-	$scope.emonChart = [];
-	$scope.emonChart[0] = {
-		type: 'line',
-		data: {
-			labels: labelsArray,
-			datasets: [{
-				label: 'Current (mA)',
-				data: [],
-				backgroundColor: [
-					'rgba(255, 99, 132, 0.2)',
-					'rgba(54, 162, 235, 0.2)',
-					'rgba(255, 206, 86, 0.2)',
-					'rgba(75, 192, 192, 0.2)',
-					'rgba(153, 102, 255, 0.2)',
-					'rgba(255, 159, 64, 0.2)'
-				],
-				borderColor: [
-					'rgba(255,99,132,1)',
-					'rgba(54, 162, 235, 1)',
-					'rgba(255, 206, 86, 1)',
-					'rgba(75, 192, 192, 1)',
-					'rgba(153, 102, 255, 1)',
-					'rgba(255, 159, 64, 1)'
-				],
-				borderWidth: 3,
-				fill: false,
-				lineTension: 0,
-				pointRadius: 0
-			}]
-		},
+	$scope.chart = [];
+	$scope.chart[0] = {
+		data: [],
 		options: {
-			scales: {
-				yAxes: [{
-					ticks: {
-						beginAtZero: true,
-						suggestedMax: 200
-					}
-				}],
-				xAxes: [{
-					gridLines: {
-						display: false
-					},
-					ticks: {
-						//display: false,
-						suggestedMax: 300
-					}
-				}]
-			}
+			
 		},
 		
 		chartObject: {},
 		updateDataBuffer: function(value) {
-			var dataBuffer = this.data.datasets[0].data; 
-			if (dataBuffer.length >= 300) {
-				dataBuffer.shift();
-			} else {
-				labelsArray.push(dataBuffer.length);
+			this.data.datasets[0].data; 
+			if (this.data.length >= 300) {
+				this.data.shift();
 			}
-			dataBuffer.push(value);
-			this.chartObject.update();
+			this.data.push(value);
+			this.chartObject.draw();
 		}
 	};
 	
-	$scope.emonChart[1] = {
-		type: 'line',
-		data: {
-			labels: labelsArray,
-			datasets: [{
-				label: 'FFT',
-				data: [],
-				baseData: [],
-				backgroundColor: [
-					'rgba(255, 99, 132, 0.2)',
-					'rgba(54, 162, 235, 0.2)',
-					'rgba(255, 206, 86, 0.2)',
-					'rgba(75, 192, 192, 0.2)',
-					'rgba(153, 102, 255, 0.2)',
-					'rgba(255, 159, 64, 0.2)'
-				],
-				borderColor: [
-					'rgba(255,99,132,1)',
-					'rgba(54, 162, 235, 1)',
-					'rgba(255, 206, 86, 1)',
-					'rgba(75, 192, 192, 1)',
-					'rgba(153, 102, 255, 1)',
-					'rgba(255, 159, 64, 1)'
-				],
-				borderWidth: 3,
-				fill: false,
-				lineTension: 0,
-				pointRadius: 0
-			}]
-		},
+	$scope.chart[1] = {
+		data: [],
 		options: {
-			scales: {
-				yAxes: [{
-					ticks: {
-						beginAtZero: true,
-						suggestedMax: 15e62
-					}
-				}],
-				xAxes: [{
-					gridLines: {
-						display: false
-					},
-					ticks: {
-						beginAtZero: true,
-						suggestedMax: 4000
-					}
-				}]
-			}
+			
 		},
 		
-		chartObject: {},
-		updateFFTBuffer: function(value) {
-			var dataBuffer = this.data.datasets[0].baseData; 
-			if (dataBuffer.length >= 300) {
-				dataBuffer.shift();
-			}
-			dataBuffer.push(value);
+		// updateFFTBuffer: function(value) {
+		// 	var dataBuffer = this.data.datasets[0].baseData; 
+		// 	if (dataBuffer.length >= 300) {
+		// 		dataBuffer.shift();
+		// 	}
+		// 	dataBuffer.push(value);
 			
-			var phasors = fft(dataBuffer);
-			// sampleRate: 100 samples per second
-			var frequencies = fftUtil.fftFreq(phasors, 100);
-    		var magnitudes = fftUtil.fftMag(phasors);
+		// 	var phasors = fft(dataBuffer);
+		// 	// sampleRate: 100 samples per second
+		// 	var frequencies = fftUtil.fftFreq(phasors, 100);
+    	// 	var magnitudes = fftUtil.fftMag(phasors);
 			
-			this.data.labels = frequencies.slice();
-			this.data.datasets[0].data = magnitudes.slice();
+		// 	this.data.labels = frequencies.slice();
+		// 	this.data.datasets[0].data = magnitudes.slice();
 			
-			this.chartObject.update();
-		}
+		// 	this.chartObject.update();
+		// }
 	};
 	
     /** IPC CONFIGURATION */
@@ -147,7 +57,7 @@ app.controller('MonitorController', function ($scope) {
     ipc.serve(function () {        
 		ipc.server.on('emonserial:data', function (data, socket) {
 			$scope.emonChart[0].updateDataBuffer(data.current);
-			$scope.emonChart[1].updateFFTBuffer(data.current);
+			// $scope.emonChart[1].updateFFTBuffer(data.current);
             $scope.$apply();
 		});
 	});
