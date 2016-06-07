@@ -17,6 +17,7 @@
   "author": "Felipe Nipo <fpnipo@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "fft-js": "0.0.9",
     "node-ipc": "^7.0.0",
     "nw": "^0.15.0"
   },
