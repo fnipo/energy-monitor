@@ -7,6 +7,8 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 int emonPin = 1; 
 // electrical network
 int net = 220.0;
+
+int value = 1;
  
 void setup() 
 {
@@ -24,9 +26,9 @@ void setup()
 } 
   
 void loop() 
-{   
+{ 
   // calculates current
-  double Irms = emon.calcIrms(1480);
+//  double Irms = emon.calcIrms(1480);
 
   // shows current
   //Serial.print("Current: ");
@@ -36,9 +38,18 @@ void loop()
    
   // calculates power
   //Serial.print(" Power: ");
-  Serial.println(Irms*net);
+  //Serial.println(Irms*net);
 //  lcd.setCursor(10,1);
 //  lcd.print("      ");
 //  lcd.setCursor(10,1);
 //  lcd.print(Irms*net,1);
+
+  if(value == 100)
+  {
+    value = 1;
+  }
+  value++;
+  Serial.println(value);
+   
+  delay(10);
 }
