@@ -5,13 +5,13 @@
   "main": "public/index.html",
   "window": {
     "toolbar": true,
-    "resizable": false,
-    "width": 1000,
-    "height": 600,
-    "min_width": 600,
-    "min_height": 400,
-    "max_width": 1000,
-    "max_height": 600,
+    "resizable": true,
+    "width": 1200,
+    "height": 800,
+    // "min_width": 600,
+    // "min_height": 400,
+    // "max_width": 1000,
+    // "max_height": 600,
     "position": "center"
   },
   "author": "Felipe Nipo <fpnipo@gmail.com>",
@@ -19,7 +19,7 @@
   "dependencies": {
     "fft-js": "0.0.9",
     "node-ipc": "^7.0.0",
-    "nw": "^0.15.0"
+    "nw": "^0.12.3"
   },
   "devDependencies": {},
   "scripts": {

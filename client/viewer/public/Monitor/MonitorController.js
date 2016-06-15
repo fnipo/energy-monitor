@@ -1,10 +1,15 @@
 var app = angular.module('EnergyMonitor.Monitor');
 app.controller('MonitorController', function ($scope) {
 	
-	var fft = load('fft-js').fft;
-	var fftUtil = load('fft-js').util;
+	var BUFFER_SIZE = 8192;
+	
+	var fftjs = load('fft-js');
+	var fft = fftjs.fft;
+	var fftUtil = fftjs.util;
 	
 	var labelsArray = [];
+	
+	$scope.data = 10;
 	
 	$scope.emonChart = [];
 	$scope.emonChart[0] = {
@@ -40,17 +45,12 @@ app.controller('MonitorController', function ($scope) {
 			scales: {
 				yAxes: [{
 					ticks: {
-						beginAtZero: true,
-						suggestedMax: 200
+						beginAtZero: true
 					}
 				}],
 				xAxes: [{
 					gridLines: {
 						display: false
-					},
-					ticks: {
-						//display: false,
-						suggestedMax: 300
 					}
 				}]
 			}
@@ -59,7 +59,7 @@ app.controller('MonitorController', function ($scope) {
 		chartObject: {},
 		updateDataBuffer: function(value) {
 			var dataBuffer = this.data.datasets[0].data; 
-			if (dataBuffer.length >= 300) {
+			if (dataBuffer.length >= BUFFER_SIZE) {
 				dataBuffer.shift();
 			} else {
 				labelsArray.push(dataBuffer.length);
@@ -103,8 +103,7 @@ app.controller('MonitorController', function ($scope) {
 			scales: {
 				yAxes: [{
 					ticks: {
-						beginAtZero: true,
-						suggestedMax: 15e62
+						beginAtZero: true
 					}
 				}],
 				xAxes: [{
@@ -112,8 +111,7 @@ app.controller('MonitorController', function ($scope) {
 						display: false
 					},
 					ticks: {
-						beginAtZero: true,
-						suggestedMax: 4000
+						beginAtZero: true
 					}
 				}]
 			}
@@ -122,20 +120,26 @@ app.controller('MonitorController', function ($scope) {
 		chartObject: {},
 		updateFFTBuffer: function(value) {
 			var dataBuffer = this.data.datasets[0].baseData; 
-			if (dataBuffer.length >= 300) {
+			if (dataBuffer.length >= BUFFER_SIZE) {
 				dataBuffer.shift();
 			}
 			dataBuffer.push(value);
 			
-			var phasors = fft(dataBuffer);
-			// sampleRate: 100 samples per second
-			var frequencies = fftUtil.fftFreq(phasors, 100);
-    		var magnitudes = fftUtil.fftMag(phasors);
-			
-			this.data.labels = frequencies.slice();
-			this.data.datasets[0].data = magnitudes.slice();
-			
-			this.chartObject.update();
+			if (isPowerOf2(dataBuffer.length))
+			{
+				var phasors = fft(dataBuffer.slice());
+				// sampleRate: 3.79 samples per second, 1 sample each 264ms
+				var frequencies = fftUtil.fftFreq(phasors, 3.79);
+				var magnitudes = fftUtil.fftMag(phasors);
+				magnitudes = magnitudes.slice().map(function(val, i) {
+					return isNaN(val) ? 0 : val; 
+				});
+				
+				this.data.labels = frequencies.slice();
+				this.data.datasets[0].data = magnitudes;
+				
+				this.chartObject.update();
+			}
 		}
 	};
 	
@@ -148,10 +152,15 @@ app.controller('MonitorController', function ($scope) {
 		ipc.server.on('emonserial:data', function (data, socket) {
 			$scope.emonChart[0].updateDataBuffer(data.current);
 			$scope.emonChart[1].updateFFTBuffer(data.current);
+			$scope.data = data.current;
             $scope.$apply();
 		});
 	});
 
 	ipc.server.start();
-    
+	
+	var isPowerOf2 = function(value) {
+		return ((value & (value - 1)) == 0);
+	}
+	
 });
